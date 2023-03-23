@@ -8,7 +8,9 @@ import util.PrettyPrint.blockWithTimeMeasure
 
 val flow = flow {
     (1..3).forEach {
-        emit("http://httpbin.org/delay/$it".httpGet().awaitStringResponse())
+        val url = "http://httpbin.org/delay/$it"
+        println("get $url")
+        emit(url.httpGet().awaitStringResponse())
     }
 }
 

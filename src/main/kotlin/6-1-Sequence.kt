@@ -13,7 +13,7 @@ val sequence = sequence {
 fun main() = blockWithTimeMeasure {
     runBlocking {
         launch {
-            (1..1000).forEach {
+            repeat(1000) {
                 delay(100)
                 println("other corutine $it")
             }
@@ -23,5 +23,6 @@ fun main() = blockWithTimeMeasure {
             println("recibida respuesta de ${response.first.url}: ${response.second.body().length} caracteres")
         }
 }}
+
 
 
