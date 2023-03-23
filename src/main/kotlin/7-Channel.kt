@@ -10,24 +10,22 @@ import kotlinx.coroutines.runBlocking
 import util.PrettyPrint
 import kotlin.random.Random.Default.nextInt
 
-fun main() = PrettyPrint.blockWithTimeMeasure { runBlocking {
-    val channel = Channel<String>()
+fun main() = PrettyPrint.blockWithTimeMeasure {
+    runBlocking {
+        val channel = Channel<String>()
 
-    launch {
-        (1..5).forEach {
-            launch {
-                val url = "http://httpbin.org/delay/${nextInt(1, 5)}"
-                println("get $url")
-                val response = url.httpGet().awaitStringResponse()
-                channel.send("peticion $it recibida, url: ${response.first.url}")
+        launch {
+            repeat(5) {
+                launch {
+                    val url = "http://httpbin.org/delay/${nextInt(1, 5)}"
+                    println("get $url")
+                    val response = url.httpGet().awaitStringResponse()
+                    channel.send("peticion $it recibida, url: ${response.first.url}")
+                }
             }
-        }
-    }.invokeOnCompletion {
-        channel.close()
-    }
+        }.invokeOnCompletion { channel.close() }
 
-    channel.consumeEach { response ->
-        println(response)
+        channel.consumeEach { response -> println(response) }
     }
-}}
+}
 

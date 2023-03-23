@@ -3,8 +3,8 @@ import util.PrettyPrint.prettyPrint
 import util.PrettyPrint.printBlock
 import kotlinx.coroutines.*
 
-fun main(args: Array<String>) { blockWithTimeMeasure {
-    runBlocking(CoroutineName("principal")) { printBlock(name="runBlocking") {
+fun main() = blockWithTimeMeasure {
+    runBlocking { printBlock(name="runBlocking") {
         val deferredAsync1 = async { printBlock(name = "async-1") {
                 delay(3_000)
                 "Hola "
@@ -18,6 +18,6 @@ fun main(args: Array<String>) { blockWithTimeMeasure {
 
         prettyPrint("runBlocking ${deferredAsync1.await()} ${deferredAsync2.await()}")
     }}
-}}
+}
 
 
